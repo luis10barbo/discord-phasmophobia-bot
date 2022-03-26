@@ -46,7 +46,7 @@ class MyClient(discord.Client):
                 await self.send_message(msg.channel.id, f"**Commands:**\
                                                         \n      **>>help** ~> Generates this menu.\n\
                                                         \n      **>>generatepartialosu (name) (type)** ~> Mixes osu/phasmophobia names. You can set the name/surname by typing what name you want at the **(name) argument** and name/surname at the **(type) argument**\n\
-                                                        \n      **>>generatefullphasmo** ~> Generate full phasmophobia name.\n\
+                                                        \n      **>>generatefullphasmo** ~> Generate full phasmophobia name. You can set the name/surname by typing what name you want at the **(name) argument** and name/surname at the **(type) argument**\n\
                                                         \n      **>>roll (max_number)** ~> Generates random number between 1 and **(max_number) argument**. **(max_number) argument** defaults to 100")
                 
             elif msg_lower.startswith(f"{command_prefix}generatepartialosu") == True:
