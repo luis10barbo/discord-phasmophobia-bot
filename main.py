@@ -1,4 +1,4 @@
-from keep_alive import keep_alive
+import keep_alive
 from phasmo_functions import * 
 import discord
 from discord.ext import tasks
@@ -72,7 +72,26 @@ class MyClient(discord.Client):
                 await self.send_message(msg.channel.id, f"**Name generated:** {name}")
                 
             elif msg_lower.startswith(f"{command_prefix}generatefullphasmo") == True:
-                name, err = generate_full_phasmo()
+                name, err = generate_full_phasmo(first_name="", second_name="")
+                # Check arguments
+                if number_of_arguments == 1:
+                    name, err = generate_full_phasmo(first_name="", second_name="")
+                if number_of_arguments == 2:
+                    await self.send_error_message(msg.channel.id , "No **(type)** specified!")
+                    return
+                elif number_of_arguments >= 3:
+                    if command_arguments[2] == "name":
+                        name, err = generate_full_phasmo(first_name=command_arguments[1].title(), second_name="")
+                    elif command_arguments[2] == "surname":
+                        name, err = generate_full_phasmo(first_name="", second_name=command_arguments[1].title())
+                    else:
+                        await self.send_error_message(msg.channel.id , "Invalid **(type)**!")
+                        return
+                        
+                if err != None:
+                    await self.send_message(msg.channel.id, f"**Error:** {err}")
+                    return
+                    
                 await self.send_message(msg.channel.id, f"**Name generated:** {name}")
                 
             elif msg_lower.startswith(f"{command_prefix}roll") == True:
@@ -104,7 +123,7 @@ class MyClient(discord.Client):
     async def send_error_message(self, channel_id, msg):
         await self.send_message(channel_id, f"**Error:** {msg}")
 # Keep bot alive when using repl.it
-keep_alive()
+keep_alive.keep_alive()
 
 TOKEN = open_token()
 
@@ -114,5 +133,6 @@ try:
     client.run(TOKEN)
 except:
     print("Restarting")
+    keep_alive.stop()
     system("python restarter.py")
     system("kill 1")
